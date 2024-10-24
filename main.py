@@ -3,13 +3,21 @@ import argparse
 from models.validator import Validator
 from util.pretty_print import pretty_print_players, pretty_print_player_list
 
+from discord_timestamps import format_timestamp, TimestampType
+import arrow
+
 # Use the below if you want to run the script w/o using command line arguments
 battlefy_csv_filename = ''
 gform_csv_filename = ''
 
+# Update these varibles per qualifier for the final print block
+END_OF_REGISTRATION_TIMESTAMP = "<t:1729828740:F>"
+Q_NUMBER = "#3"
 
 def runner():
     validation = Validator(battlefy_csv_filename, gform_csv_filename)
+
+    print("*The below message was generated on", format_timestamp(arrow.utcnow(), TimestampType.LONG_DATETIME), "via an automatic script*")
 
     print("\n## Splashtag Errors on Battlefy")
 
@@ -61,6 +69,14 @@ def runner():
             if len(only_in_gform) > 0:
                 print(f"  - Players only on Google Form:{only_in_gform}")
 
+    print("\n**Please note that all registration issues must be resolved by", END_OF_REGISTRATION_TIMESTAMP, ". Any players with missing or incorrect Splashtags after this date will be dropped and cannot play for Qualifier", Q_NUMBER, ". Any teams with less than 4 players or teams that have not registered via Google form will also be dropped.  __This deadline cannot be extended for any reason.__ You will be unable to update player names after", END_OF_REGISTRATION_TIMESTAMP, "Please read the ruleset found in #circuit-info for more information.**")
+    print("\nAs a reminder, here are the different ways your team registration may have issues:")
+    print("- `Splashtag Errors on Battlefy`")
+    print("  - If your team in this section, this means there are player(s) that do not have a valid Splashtag on Battlefy. We do require the full Splashtag, including the pound sign and the 4 or 5 digit number afterwards. For example, `VeronIKA#1234` is a valid Splashtag. `VeronIKA` is not acceptable. For more information, [refer to this guide made by our friends at IPL](<https://docs.google.com/document/d/14oxhAWuwxXqSwE0ZX-LB2wTdFX4BEY08hMLwRqu_O3k/edit#heading=h.jvd3a86dfp7c>).")
+    print("- `Teams that have not registered via Google form`")
+    print("  - If your team in this section, this means that you have not registered your team using the Google form. All teams are required to fill out the CCA Circuit Google Registration form found in #circuit-info")
+    print("- `Splashtag Cross Check`")
+    print("  - If your team in this section, this means that there are players that are not on Battlefy or part of your roster originally submitted during Google Registration. Player(s) may be in this section if their Splashtag are different between registrations. Please add or update this player by filling out the Roster Changes Form in #circuit-info")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
